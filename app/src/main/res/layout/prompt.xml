@@ -7,18 +7,18 @@
     android:padding="10dp">
 
     <TextView
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Nomor objek"
-        android:id="@+id/textView" />
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <EditText
         android:id="@+id/edittext"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:inputType="number"
         android:hint="Masukkan nomor objek di sini.."
+        android:inputType="number"
         android:padding="10dp" />
 
 </LinearLayout>
