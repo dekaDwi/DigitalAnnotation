@@ -291,6 +291,8 @@ public class MainActivity extends AppCompatActivity {
         canvasMaster.drawBitmap(gambarAsli, 0, 0, null);
         imageResult.setImageBitmap(bitmapMaster);
         jumlahMembran.setText("Number of object : " + Membran.count);
+        undos.clear();
+        cnt = 0;
         gambarSel();
         hapusLabel(idx);
         simpanAnotasi.setEnabled(true);
