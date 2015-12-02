@@ -10,7 +10,7 @@
         android:id="@+id/panelKontrol"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="0.15"
+        android:layout_weight="0.2"
         android:background="#fff8ffb1"
         android:orientation="vertical">
 
@@ -66,6 +66,12 @@
             android:text="Save Object"/>
 
         <Button
+            android:id="@+id/btnHapus"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Remove Object"/>
+
+        <Button
             android:id="@+id/btnSimpan"
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -87,27 +93,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/panelObjek"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="0.15"
-        android:background="#fff8ffb1"
-        android:orientation="vertical">
-
-        <Button
-            android:id="@+id/btnHapus"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="Remove Object"/>
-
-        <!--<TextView-->
-            <!--android:id="@+id/hasilInput"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="25dp"/>-->
 
     </LinearLayout>
 

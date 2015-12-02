@@ -223,7 +223,6 @@ public class MainActivity extends AppCompatActivity {
                 undos.clear();
                 cnt = 0;
                 Elemen temp = s.head;
-
                 if (!s.isEmpty()) {
                     point2(temp.x, temp.y, 2);
                     while (temp.next != null) {
@@ -231,6 +230,7 @@ public class MainActivity extends AppCompatActivity {
                         point2(temp.x, temp.y, 2);
                     }
                 }
+                gambarNo(s, Membran.count);
                 int[][] koor = sort(l2);
                 label(koor, Membran.count);
                 simpanAnotasi.setEnabled(true);
@@ -622,6 +622,7 @@ public class MainActivity extends AppCompatActivity {
     public void gambarSel() {
         Elemen e;
 //        s = Membran.head;
+        int idx = 1;
         for (Sel s : Membran.getAll()) {
             if (s != null) {
                 e = s.head;
@@ -633,10 +634,70 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
             }
+            gambarNo(s, idx);
+            idx++;
         }
     }
 
+    public void gambarNo(Sel s, int idx) {
+        Elemen e;
+        int xMax = 0;
+        int yMax = 0;
+        if (s != null) {
+            e = s.head;
+            if (e != null) {
+                if (e.x > xMax) {
+                    xMax = e.x;
+                }
+                if (e.y > yMax) {
+                    yMax = e.y;
+                }
+                while (e.next != null) {
+                    e = e.next;
+                    if (e.x > xMax) {
+                        xMax = e.x;
+                    }
+                    if (e.y > yMax) {
+                        yMax = e.y;
+                    }
+                }
+            }
+        }
+        int xMin = xMax;
+        int yMin = yMax;
+        if (s != null) {
+            e = s.head;
+            if (e != null) {
+                if (e.x < xMin) {
+                    xMin = e.x;
+                }
+                if (e.y < yMin) {
+                    yMin = e.y;
+                }
+                while (e.next != null) {
+                    e = e.next;
+                    if (e.x < xMin) {
+                        xMin = e.x;
+                    }
+                    if (e.y < yMin) {
+                        yMin = e.y;
+                    }
+                }
+            }
+        }
+        int x = ((xMax + xMin) / 2);
+        int y = ((yMax + yMin) / 2);
+        String teks = "" + idx;
+        Paint paint = new Paint();
+        paint.setColor(Color.YELLOW);
+        paint.setStyle(Paint.Style.FILL);
+        paint.setTextSize(30);
+        canvasMaster.drawText(teks, x, y, paint);
+        imageResult.invalidate();
+    }
+
     //untuk menggambar titik sesuai dengan masukkan touch dari user
+
     public void point(int x, int y, int kondisi) {
         if (x < 0 || y < 0 || x > imageResult.getWidth() || y > imageResult.getHeight()) {
             return;
