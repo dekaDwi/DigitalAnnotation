@@ -214,30 +214,39 @@ public class MainActivity extends AppCompatActivity {
         simpanMembran.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                TimingLogger timings = new TimingLogger("TopicLogTag", "simpan membran");
-                simpanAnotasi.setEnabled(false);
-                Membran.tambahData(s);
-                jumlahMembran.setText("Number of object : " + Membran.count);
-                canvasMaster.drawBitmap(undos.pop(), 0, 0, null);
-                imageResult.invalidate();
-                undos.clear();
-                cnt = 0;
-                Elemen temp = s.head;
-                if (!s.isEmpty()) {
-                    point2(temp.x, temp.y, 2);
-                    while (temp.next != null) {
-                        temp = temp.next;
+                try {
+                    int[][] koor = sort(l2);
+                    label(koor, Membran.count+1);
+                    TimingLogger timings = new TimingLogger("TopicLogTag", "simpan membran");
+                    simpanAnotasi.setEnabled(false);
+                    Membran.tambahData(s);
+                    jumlahMembran.setText("Number of object : " + Membran.count);
+                    canvasMaster.drawBitmap(undos.pop(), 0, 0, null);
+                    imageResult.invalidate();
+                    undos.clear();
+                    cnt = 0;
+                    Elemen temp = s.head;
+                    if (!s.isEmpty()) {
                         point2(temp.x, temp.y, 2);
+                        while (temp.next != null) {
+                            temp = temp.next;
+                            point2(temp.x, temp.y, 2);
+                        }
                     }
+                    gambarNo(s, Membran.count);
+                    simpanAnotasi.setEnabled(true);
+                    s = new Sel();
+                    simpanMembran.setEnabled(false);
+                    timings.addSplit("simpan membran");
+                    timings.dumpToLog();
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    Bitmap b = undos.pop();
+                    canvasMaster.drawBitmap(b, 0, 0, null);
+                    undos.push(b);
+                    imageResult.invalidate();
+//                    undos.clear();
+                    toast("Terjadi kesalahan.\nUlangi menandai objek.");
                 }
-                gambarNo(s, Membran.count);
-                int[][] koor = sort(l2);
-                label(koor, Membran.count);
-                simpanAnotasi.setEnabled(true);
-                s = new Sel();
-                simpanMembran.setEnabled(false);
-                timings.addSplit("simpan membran");
-                timings.dumpToLog();
             }
         });
 
