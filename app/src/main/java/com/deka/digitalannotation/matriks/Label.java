@@ -97,7 +97,7 @@ public class Label {
         hasil[b][k] = 1;
         int temp = 1;
         for (int i = 1; i <= baris - 2; i++) {
-            int k1 = kolom-2;
+            int k1 = kolom - 2;
             for (int j = 1; j <= kolom - 2; j++) {
                 if (hasil[i][j] == 1) {
                     hasil[i - 1][j] = (AC[i - 1][j] == 1 && temp == 1) ? 1 : 0;
@@ -115,7 +115,7 @@ public class Label {
             }
         }
         for (int j = 1; j <= kolom - 2; j++) {
-            int b1 = baris-2;
+            int b1 = baris - 2;
             for (int i = 1; i <= baris - 2; i++) {
                 if (hasil[i][j] == 1) {
                     hasil[i - 1][j] = (AC[i - 1][j] == 1 && temp == 1) ? 1 : 0;
@@ -155,7 +155,7 @@ public class Label {
         int ii = 1;
         while (ii < baris && !ketemu) {
             int j = 1;
-            while (j < baris && !ketemu) {
+            while (j < kolom && !ketemu) {
                 if (ah[ii][j] == 0 && (ah[ii][j - 1] == 1 && ah[ii - 1][j] == 1)) {
                     b = ii;
                     k = j;
@@ -189,8 +189,9 @@ public class Label {
                 }
                 if (!mundur) {
                     j--;
+                } else {
+                    st.push(new int[]{i, j + 1});
                 }
-                st.push(new int[]{i, j + 1});
             }
             //cari seed baru di atas
             j = jTemp;
@@ -203,8 +204,9 @@ public class Label {
                 }
                 if (!mundur) {
                     j--;
+                } else {
+                    st.push(new int[]{i, j + 1});
                 }
-                st.push(new int[]{i, j + 1});
             }
             if (st.isEmpty()) {
                 selesai = true;
