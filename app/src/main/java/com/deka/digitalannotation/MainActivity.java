@@ -1,10 +1,12 @@
 package com.deka.digitalannotation;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -16,10 +18,13 @@ import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.util.TimingLogger;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -53,6 +58,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
+import static android.content.ContentValues.TAG;
+
 public class MainActivity extends AppCompatActivity {
 
     final int RQS_IMAGE1 = 1;
@@ -74,6 +81,12 @@ public class MainActivity extends AppCompatActivity {
     Bitmap bitmapMaster, b, label, gambarAsli;
     Canvas canvasMaster, label2;
     Stack<Bitmap> undos = new Stack<Bitmap>();
+
+    private static final int REQUEST_EXTERNAL_STORAGE = 1;
+    private static String[] PERMISSIONS_STORAGE = {
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
 
     public static Uri getImageContentUri(Context context, File imageFile) {
         String filePath = imageFile.getAbsolutePath();
@@ -532,6 +545,8 @@ public class MainActivity extends AppCompatActivity {
 
     //penyimpanan file
     public void simpanFile() {
+//        this.verifyStoragePermissions(this);
+        isStoragePermissionGranted();
         TimingLogger timings = new TimingLogger("TopicLogTag", "simpanFile");
         String namaFile = textJudul.getText().toString();
         String lokasiFile = textLokasi.getText().toString();
@@ -558,6 +573,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void simpanLabel() {
+//        this.verifyStoragePermissions(this);
+        isStoragePermissionGranted();
         String namaFile = textJudul.getText().toString();
         int name = namaFile.lastIndexOf(".");
         String nama = namaFile.substring(0, name) + ".png";
@@ -576,6 +593,8 @@ public class MainActivity extends AppCompatActivity {
 
     //pembacaan file anotasi dari file yang sama jika ada
     public void readFile() throws FileNotFoundException {
+//        this.verifyStoragePermissions(MainActivity.this);
+        isStoragePermissionGranted();
         TimingLogger timings = new TimingLogger("TopicLogTag", "membaca file");
         String namaFile = textJudul.getText().toString();
         int name = namaFile.lastIndexOf(".");
@@ -849,6 +868,34 @@ public class MainActivity extends AppCompatActivity {
                     }
                     break;
             }
+        }
+    }
+
+    public  boolean isStoragePermissionGranted() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED) {
+                Log.v(TAG,"Permission is granted");
+                return true;
+            } else {
+
+                Log.v(TAG,"Permission is revoked");
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                return false;
+            }
+        }
+        else { //permission is automatically granted on sdk<23 upon installation
+            Log.v(TAG,"Permission is granted");
+            return true;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(grantResults[0]== PackageManager.PERMISSION_GRANTED){
+            Log.v(TAG,"Permission: "+permissions[0]+ "was "+grantResults[0]);
+            //resume tasks needing this permission
         }
     }
 
